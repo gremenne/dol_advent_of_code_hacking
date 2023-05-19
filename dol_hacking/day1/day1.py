@@ -2,7 +2,7 @@ import os
 import itertools
 import more_itertools
 
-def process_data1_first(data):
+def process_data1_first_try(data):
     sum = 0
     for line in data:
         sum +=int(line)
@@ -12,7 +12,7 @@ def process_data1_first(data):
 def process_data1(data):
     return sum([int(line) for line in data])
 
-def process_data2_first(data):
+def process_data2_first_try(data):
     sum = 0
     seen = set([0])
     while True:
@@ -21,6 +21,13 @@ def process_data2_first(data):
             if sum in seen:
                 return sum
             seen.add(sum)
+
+def process_data2_second_try(data):
+    seen = set([0])
+    for value in itertools.accumulate(itertools.cycle([int(line) for line in data])):
+        if value in seen:
+            return value
+        seen.add(value)
 
 def process_data2(data):
     value = more_itertools.first(
