@@ -46,7 +46,7 @@ def process_data2(data):
 
     return value
 
-def day1():
+def run():
     with get_input_data() as data:
         answer1 = process_data1(data)
         print(f"The answer to part 1 is: {answer1}")
@@ -56,4 +56,4 @@ def day1():
         print(f"The answer to part 2 is: {answer2}")
 
 if __name__ == "__main__":
-    day1()
+    run()
