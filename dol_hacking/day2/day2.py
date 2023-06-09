@@ -1,5 +1,10 @@
 import os
+import itertools
+import more_itertools
+import collections
 from contextlib import contextmanager
+
+# Reference: https://adventofcode.com/2018/day/2
 
 @contextmanager
 def get_input_data():
@@ -7,11 +12,55 @@ def get_input_data():
     with open(input_file_path, mode='r') as input_file:
         yield input_file
 
+def process_box_id1(string):
+    dictionary = {}
+    for letter in string:
+        dictionary[letter] = dictionary.get(letter, 0) + 1
+
+    return dictionary
+
+def has_n_duplicates(dictionary, n):
+    for k, v in dictionary.items():
+        if v == n:
+            return True
+
+    return False
+
+def process_line1a(line):
+    dictionary = process_box_id1(line)
+    return has_n_duplicates(dictionary, 2), has_n_duplicates(dictionary, 3)
+
+def process_line1(line):
+    counts = collections.Counter(line).values()
+    return 2 in counts, 3 in counts
+
 def process_data1(data):
-    pass
+    duplicates = 0
+    triplicates = 0
+    for line in data:
+        duplicate, triplicate = process_line1(line)
+
+        if duplicate:
+            duplicates += 1
+
+        if triplicate:
+            triplicates += 1
+
+    return duplicates * triplicates
+
+def find_close_match(data):
+    combinations = itertools.combinations(data, 2)
+    for left_id, right_id in combinations:
+        matches = [left_char!=right_char for left_char, right_char in zip(left_id, right_id)]
+
+        if sum(matches) == 1:
+            return left_id, right_id
+
+    return None, None
 
 def process_data2(data):
-    pass
+    left, right = find_close_match(data)
+    return "".join([left_char for left_char, right_char in zip(left, right) if left_char == right_char])
 
 def run():
     with get_input_data() as data:
